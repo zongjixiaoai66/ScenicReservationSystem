@@ -1,207 +1,304 @@
+
 package com.controller;
 
+import java.io.File;
+import java.math.BigDecimal;
+import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Date;
-import java.util.List;
+import com.alibaba.fastjson.JSONObject;
+import java.util.*;
+import org.springframework.beans.BeanUtils;
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.context.ContextLoader;
+import javax.servlet.ServletContext;
+import com.service.TokenService;
+import com.utils.*;
+import java.lang.reflect.InvocationTargetException;
 
-import com.utils.ValidatorUtils;
+import com.service.DictionaryService;
 import org.apache.commons.lang3.StringUtils;
+import com.annotation.IgnoreAuth;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.annotation.IgnoreAuth;
-
-import com.entity.NewsEntity;
-import com.entity.view.NewsView;
-
-import com.service.NewsService;
-import com.service.TokenService;
+import com.entity.*;
+import com.entity.view.*;
+import com.service.*;
 import com.utils.PageUtils;
 import com.utils.R;
-import com.utils.MD5Util;
-import com.utils.MPUtil;
-import com.utils.CommonUtil;
-
+import com.alibaba.fastjson.*;
 
 /**
- * 医院公告
+ * 公告
  * 后端接口
- * @author 
- * @email 
- * @date 2021-04-15 15:10:24
- */
+ * @author
+ * @email
+*/
 @RestController
+@Controller
 @RequestMapping("/news")
 public class NewsController {
+    private static final Logger logger = LoggerFactory.getLogger(NewsController.class);
+
     @Autowired
     private NewsService newsService;
-    
+
+
+    @Autowired
+    private TokenService tokenService;
+    @Autowired
+    private DictionaryService dictionaryService;
+
+    //级联表service
+
+    @Autowired
+    private YonghuService yonghuService;
+    @Autowired
+    private GongzuorenyuanService gongzuorenyuanService;
 
 
     /**
-     * 后端列表
-     */
+    * 后端列表
+    */
     @RequestMapping("/page")
-    public R page(@RequestParam Map<String, Object> params,NewsEntity news,
-		HttpServletRequest request){
-        EntityWrapper<NewsEntity> ew = new EntityWrapper<NewsEntity>();
-		PageUtils page = newsService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, news), params), params));
+    public R page(@RequestParam Map<String, Object> params, HttpServletRequest request){
+        logger.debug("page方法:,,Controller:{},,params:{}",this.getClass().getName(),JSONObject.toJSONString(params));
+        String role = String.valueOf(request.getSession().getAttribute("role"));
+        if(false)
+            return R.error(511,"永不会进入");
+        else if("用户".equals(role))
+            params.put("yonghuId",request.getSession().getAttribute("userId"));
+        else if("工作人员".equals(role))
+            params.put("gongzuorenyuanId",request.getSession().getAttribute("userId"));
+        if(params.get("orderBy")==null || params.get("orderBy")==""){
+            params.put("orderBy","id");
+        }
+        PageUtils page = newsService.queryPage(params);
 
+        //字典表数据转换
+        List<NewsView> list =(List<NewsView>)page.getList();
+        for(NewsView c:list){
+            //修改对应字典表字段
+            dictionaryService.dictionaryConvert(c, request);
+        }
         return R.ok().put("data", page);
     }
-    
-    /**
-     * 前端列表
-     */
-	@IgnoreAuth
-    @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params,NewsEntity news, HttpServletRequest request){
-        EntityWrapper<NewsEntity> ew = new EntityWrapper<NewsEntity>();
-		PageUtils page = newsService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, news), params), params));
-        return R.ok().put("data", page);
-    }
 
-	/**
-     * 列表
-     */
-    @RequestMapping("/lists")
-    public R list( NewsEntity news){
-       	EntityWrapper<NewsEntity> ew = new EntityWrapper<NewsEntity>();
-      	ew.allEq(MPUtil.allEQMapPre( news, "news")); 
-        return R.ok().put("data", newsService.selectListView(ew));
-    }
-
-	 /**
-     * 查询
-     */
-    @RequestMapping("/query")
-    public R query(NewsEntity news){
-        EntityWrapper< NewsEntity> ew = new EntityWrapper< NewsEntity>();
- 		ew.allEq(MPUtil.allEQMapPre( news, "news")); 
-		NewsView newsView =  newsService.selectView(ew);
-		return R.ok("查询医院公告成功").put("data", newsView);
-    }
-	
     /**
-     * 后端详情
-     */
+    * 后端详情
+    */
     @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Long id){
+    public R info(@PathVariable("id") Long id, HttpServletRequest request){
+        logger.debug("info方法:,,Controller:{},,id:{}",this.getClass().getName(),id);
         NewsEntity news = newsService.selectById(id);
-        return R.ok().put("data", news);
+        if(news !=null){
+            //entity转view
+            NewsView view = new NewsView();
+            BeanUtils.copyProperties( news , view );//把实体数据重构到view中
+
+            //修改对应字典表字段
+            dictionaryService.dictionaryConvert(view, request);
+            return R.ok().put("data", view);
+        }else {
+            return R.error(511,"查不到数据");
+        }
+
     }
 
     /**
-     * 前端详情
-     */
-	@IgnoreAuth
-    @RequestMapping("/detail/{id}")
-    public R detail(@PathVariable("id") Long id){
-        NewsEntity news = newsService.selectById(id);
-        return R.ok().put("data", news);
-    }
-    
-
-
-
-    /**
-     * 后端保存
-     */
+    * 后端保存
+    */
     @RequestMapping("/save")
     public R save(@RequestBody NewsEntity news, HttpServletRequest request){
-    	news.setId(new Date().getTime()+new Double(Math.floor(Math.random()*1000)).longValue());
-    	//ValidatorUtils.validateEntity(news);
-        newsService.insert(news);
-        return R.ok();
-    }
-    
-    /**
-     * 前端保存
-     */
-    @RequestMapping("/add")
-    public R add(@RequestBody NewsEntity news, HttpServletRequest request){
-    	news.setId(new Date().getTime()+new Double(Math.floor(Math.random()*1000)).longValue());
-    	//ValidatorUtils.validateEntity(news);
-        newsService.insert(news);
-        return R.ok();
+        logger.debug("save方法:,,Controller:{},,news:{}",this.getClass().getName(),news.toString());
+
+        String role = String.valueOf(request.getSession().getAttribute("role"));
+        if(false)
+            return R.error(511,"永远不会进入");
+
+        Wrapper<NewsEntity> queryWrapper = new EntityWrapper<NewsEntity>()
+            .eq("news_name", news.getNewsName())
+            .eq("news_types", news.getNewsTypes())
+            ;
+
+        logger.info("sql语句:"+queryWrapper.getSqlSegment());
+        NewsEntity newsEntity = newsService.selectOne(queryWrapper);
+        if(newsEntity==null){
+            news.setInsertTime(new Date());
+            news.setCreateTime(new Date());
+            newsService.insert(news);
+            return R.ok();
+        }else {
+            return R.error(511,"表中有相同数据");
+        }
     }
 
     /**
-     * 修改
-     */
+    * 后端修改
+    */
     @RequestMapping("/update")
     public R update(@RequestBody NewsEntity news, HttpServletRequest request){
-        //ValidatorUtils.validateEntity(news);
-        newsService.updateById(news);//全部更新
-        return R.ok();
+        logger.debug("update方法:,,Controller:{},,news:{}",this.getClass().getName(),news.toString());
+
+        String role = String.valueOf(request.getSession().getAttribute("role"));
+//        if(false)
+//            return R.error(511,"永远不会进入");
+        //根据字段查询是否有相同数据
+        Wrapper<NewsEntity> queryWrapper = new EntityWrapper<NewsEntity>()
+            .notIn("id",news.getId())
+            .andNew()
+            .eq("news_name", news.getNewsName())
+            .eq("news_types", news.getNewsTypes())
+            ;
+
+        logger.info("sql语句:"+queryWrapper.getSqlSegment());
+        NewsEntity newsEntity = newsService.selectOne(queryWrapper);
+        if("".equals(news.getNewsPhoto()) || "null".equals(news.getNewsPhoto())){
+                news.setNewsPhoto(null);
+        }
+        if(newsEntity==null){
+            newsService.updateById(news);//根据id更新
+            return R.ok();
+        }else {
+            return R.error(511,"表中有相同数据");
+        }
     }
-    
 
     /**
-     * 删除
-     */
+    * 删除
+    */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] ids){
+    public R delete(@RequestBody Integer[] ids){
+        logger.debug("delete:,,Controller:{},,ids:{}",this.getClass().getName(),ids.toString());
         newsService.deleteBatchIds(Arrays.asList(ids));
         return R.ok();
     }
-    
+
+
     /**
-     * 提醒接口
+     * 批量上传
      */
-	@RequestMapping("/remind/{columnName}/{type}")
-	public R remindCount(@PathVariable("columnName") String columnName, HttpServletRequest request, 
-						 @PathVariable("type") String type,@RequestParam Map<String, Object> map) {
-		map.put("column", columnName);
-		map.put("type", type);
-		
-		if(type.equals("2")) {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			Calendar c = Calendar.getInstance();
-			Date remindStartDate = null;
-			Date remindEndDate = null;
-			if(map.get("remindstart")!=null) {
-				Integer remindStart = Integer.parseInt(map.get("remindstart").toString());
-				c.setTime(new Date()); 
-				c.add(Calendar.DAY_OF_MONTH,remindStart);
-				remindStartDate = c.getTime();
-				map.put("remindstart", sdf.format(remindStartDate));
-			}
-			if(map.get("remindend")!=null) {
-				Integer remindEnd = Integer.parseInt(map.get("remindend").toString());
-				c.setTime(new Date());
-				c.add(Calendar.DAY_OF_MONTH,remindEnd);
-				remindEndDate = c.getTime();
-				map.put("remindend", sdf.format(remindEndDate));
-			}
-		}
-		
-		Wrapper<NewsEntity> wrapper = new EntityWrapper<NewsEntity>();
-		if(map.get("remindstart")!=null) {
-			wrapper.ge(columnName, map.get("remindstart"));
-		}
-		if(map.get("remindend")!=null) {
-			wrapper.le(columnName, map.get("remindend"));
-		}
+    @RequestMapping("/batchInsert")
+    public R save( String fileName){
+        logger.debug("batchInsert方法:,,Controller:{},,fileName:{}",this.getClass().getName(),fileName);
+        try {
+            List<NewsEntity> newsList = new ArrayList<>();//上传的东西
+            Map<String, List<String>> seachFields= new HashMap<>();//要查询的字段
+            Date date = new Date();
+            int lastIndexOf = fileName.lastIndexOf(".");
+            if(lastIndexOf == -1){
+                return R.error(511,"该文件没有后缀");
+            }else{
+                String suffix = fileName.substring(lastIndexOf);
+                if(!".xls".equals(suffix)){
+                    return R.error(511,"只支持后缀为xls的excel文件");
+                }else{
+                    URL resource = this.getClass().getClassLoader().getResource("static/upload/" + fileName);//获取文件路径
+                    File file = new File(resource.getFile());
+                    if(!file.exists()){
+                        return R.error(511,"找不到上传文件，请联系管理员");
+                    }else{
+                        List<List<String>> dataList = PoiUtil.poiImport(file.getPath());//读取xls文件
+                        dataList.remove(0);//删除第一行，因为第一行是提示
+                        for(List<String> data:dataList){
+                            //循环
+                            NewsEntity newsEntity = new NewsEntity();
+//                            newsEntity.setNewsName(data.get(0));                    //公告标题 要改的
+//                            newsEntity.setNewsTypes(Integer.valueOf(data.get(0)));   //公告类型 要改的
+//                            newsEntity.setNewsPhoto("");//照片
+//                            newsEntity.setInsertTime(date);//时间
+//                            newsEntity.setNewsContent("");//照片
+//                            newsEntity.setCreateTime(date);//时间
+                            newsList.add(newsEntity);
 
 
-		int count = newsService.selectCount(wrapper);
-		return R.ok().put("count", count);
-	}
-	
+                            //把要查询是否重复的字段放入map中
+                        }
+
+                        //查询是否重复
+                        newsService.insertBatch(newsList);
+                        return R.ok();
+                    }
+                }
+            }
+        }catch (Exception e){
+            return R.error(511,"批量插入数据异常，请联系管理员");
+        }
+    }
+
+
+
+
+
+    /**
+    * 前端列表
+    */
+    @IgnoreAuth
+    @RequestMapping("/list")
+    public R list(@RequestParam Map<String, Object> params, HttpServletRequest request){
+        logger.debug("list方法:,,Controller:{},,params:{}",this.getClass().getName(),JSONObject.toJSONString(params));
+
+        // 没有指定排序字段就默认id倒序
+        if(StringUtil.isEmpty(String.valueOf(params.get("orderBy")))){
+            params.put("orderBy","id");
+        }
+        PageUtils page = newsService.queryPage(params);
+
+        //字典表数据转换
+        List<NewsView> list =(List<NewsView>)page.getList();
+        for(NewsView c:list)
+            dictionaryService.dictionaryConvert(c, request); //修改对应字典表字段
+        return R.ok().put("data", page);
+    }
+
+    /**
+    * 前端详情
+    */
+    @RequestMapping("/detail/{id}")
+    public R detail(@PathVariable("id") Long id, HttpServletRequest request){
+        logger.debug("detail方法:,,Controller:{},,id:{}",this.getClass().getName(),id);
+        NewsEntity news = newsService.selectById(id);
+            if(news !=null){
+
+
+                //entity转view
+                NewsView view = new NewsView();
+                BeanUtils.copyProperties( news , view );//把实体数据重构到view中
+
+                //修改对应字典表字段
+                dictionaryService.dictionaryConvert(view, request);
+                return R.ok().put("data", view);
+            }else {
+                return R.error(511,"查不到数据");
+            }
+    }
+
+
+    /**
+    * 前端保存
+    */
+    @RequestMapping("/add")
+    public R add(@RequestBody NewsEntity news, HttpServletRequest request){
+        logger.debug("add方法:,,Controller:{},,news:{}",this.getClass().getName(),news.toString());
+        Wrapper<NewsEntity> queryWrapper = new EntityWrapper<NewsEntity>()
+            .eq("news_name", news.getNewsName())
+            .eq("news_types", news.getNewsTypes())
+            ;
+        logger.info("sql语句:"+queryWrapper.getSqlSegment());
+        NewsEntity newsEntity = newsService.selectOne(queryWrapper);
+        if(newsEntity==null){
+            news.setInsertTime(new Date());
+            news.setCreateTime(new Date());
+        newsService.insert(news);
+            return R.ok();
+        }else {
+            return R.error(511,"表中有相同数据");
+        }
+    }
 
 
 }

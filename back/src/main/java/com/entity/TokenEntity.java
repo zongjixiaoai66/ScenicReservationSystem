@@ -15,12 +15,12 @@ public class TokenEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@TableId(type = IdType.AUTO)
-	private Long id;
+	private Integer id;
 	
 	/**
 	 * 用户id
 	 */
-	private Long userid;
+	private Integer userid;
 	
 	/**
 	 * 用户名
@@ -52,19 +52,19 @@ public class TokenEntity implements Serializable {
 	 */
 	private Date addtime;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public Long getUserid() {
+	public Integer getUserid() {
 		return userid;
 	}
 
-	public void setUserid(Long userid) {
+	public void setUserid(Integer userid) {
 		this.userid = userid;
 	}
 
@@ -116,7 +116,7 @@ public class TokenEntity implements Serializable {
 		this.username = username;
 	}
 
-	public TokenEntity(Long userid, String username, String tablename,String role, String token, Date expiratedtime) {
+	public TokenEntity(Integer userid, String username, String tablename,String role, String token, Date expiratedtime) {
 		super();
 		this.userid = userid;
 		this.username = username;

@@ -35,6 +35,8 @@ import VueAMap from 'vue-amap'
 import '@/icons'
 //excel导出
 import JsonExcel from 'vue-json-excel'
+//二维码
+import VueQr from 'vue-qr'
 //打印
 import printJS from 'print-js'
 //MD5
@@ -66,6 +68,8 @@ Vue.config.productionTip = false
 Vue.component('bread-crumbs', BreadCrumbs)
 Vue.component('file-upload', FileUpload)
 Vue.component('editor', Editor)
+//二维码
+Vue.component('VueQr', VueQr)
 //excel导出
 Vue.component('downloadExcel', JsonExcel)
 //MD5

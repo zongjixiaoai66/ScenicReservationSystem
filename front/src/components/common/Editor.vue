@@ -14,7 +14,7 @@
 
     <quill-editor
       class="editor"
-      v-model="value"
+      v-model="content"
       ref="myQuillEditor"
       :options="editorOption"
       @blur="onEditorBlur($event)"
@@ -69,7 +69,7 @@ export default {
 
   data() {
     return {
-      content: this.value,
+      content: "",
       quillUpdateImg: false, // 根据图片上传状态来确定是否显示loading动画，刚开始是false,不显示
       editorOption: {
         placeholder: "",
@@ -110,10 +110,14 @@ export default {
     // 计算属性的 getter
     getActionUrl: function() {
       // return this.$base.url + this.action + "?token=" + this.$storage.get("token");
+	  this.setContent(this.value);
       return `/${this.$base.name}/` + this.action;
     }
   },
   methods: {
+    setContent(value) {
+        this.content = value;
+    },
     onEditorBlur() {
       //失去焦点事件
     },
@@ -121,9 +125,9 @@ export default {
       //获得焦点事件
     },
     onEditorChange() {
-      console.log(this.value);
-      //内容改变事件
-      this.$emit("input", this.value);
+      // console.log(this.content);
+      // 内容改变事件
+      this.$emit("input", this.content);
     },
     // 富文本图片上传前
     beforeUpload() {

@@ -11,10 +11,10 @@
         <el-input v-model="ruleForm.password" show-password></el-input>
       </el-form-item>
       <el-form-item label="新密码" prop="newpassword">
-        <el-input v-model="ruleForm.newpassword" show-password></el-input>
+        <el-input type="password" v-model="ruleForm.newpassword" show-password></el-input>
       </el-form-item>
       <el-form-item label="确认密码" prop="repassword">
-        <el-input v-model="ruleForm.repassword" show-password></el-input>
+        <el-input type="password" v-model="ruleForm.repassword" show-password></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onUpdateHandler">确 定</el-button>

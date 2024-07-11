@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.http.HttpStatus;
 
 import com.annotation.IgnoreAuth;
 import com.entity.EIException;
@@ -34,20 +32,21 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
     private TokenService tokenService;
     
 	@Override
+
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-		//支持跨域请求
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+
+        String servletPath = request.getServletPath();
+        if("/dictionary/page".equals(request.getServletPath())  || "/file/upload".equals(request.getServletPath()) || "/yonghu/register".equals(request.getServletPath()) ){//请求路径是字典表或者文件上传 直接放行
+            return true;
+        }
+        //支持跨域请求
+		response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with,request-source,Token, Origin,imgType, Content-Type, cache-control,postman-token,Cookie, Accept,authorization");
         response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
-	// 跨域时会首先发送一个OPTIONS请求，这里我们给OPTIONS请求直接返回正常状态
-	if (request.getMethod().equals(RequestMethod.OPTIONS.name())) {
-        	response.setStatus(HttpStatus.OK.value());
-            return false;
-        }
-        
+
         IgnoreAuth annotation;
         if (handler instanceof HandlerMethod) {
             annotation = ((HandlerMethod) handler).getMethodAnnotation(IgnoreAuth.class);

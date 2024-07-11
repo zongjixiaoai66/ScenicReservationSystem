@@ -20,23 +20,21 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.enums.FieldFill;
 import com.baomidou.mybatisplus.enums.IdType;
 
-
 /**
- * 医院公告
- * 数据库通用操作实体类（普通增删改查）
+ * 公告
+ *
  * @author 
- * @email 
- * @date 2021-04-15 15:10:24
+ * @email
  */
 @TableName("news")
 public class NewsEntity<T> implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
 
 	public NewsEntity() {
-		
+
 	}
-	
+
 	public NewsEntity(T t) {
 		try {
 			BeanUtils.copyProperties(this, t);
@@ -45,102 +43,185 @@ public class NewsEntity<T> implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * 主键id
-	 */
-	@TableId
-	private Long id;
-	/**
-	 * 标题
-	 */
-					
-	private String title;
-	
-	/**
-	 * 简介
-	 */
-					
-	private String introduction;
-	
-	/**
-	 * 图片
-	 */
-					
-	private String picture;
-	
-	/**
-	 * 内容
-	 */
-					
-	private String content;
-	
-	
-	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+
+
+    /**
+     * 主键
+     */
+    @TableId(type = IdType.AUTO)
+    @TableField(value = "id")
+
+    private Integer id;
+
+
+    /**
+     * 公告标题
+     */
+    @TableField(value = "news_name")
+
+    private String newsName;
+
+
+    /**
+     * 公告类型
+     */
+    @TableField(value = "news_types")
+
+    private Integer newsTypes;
+
+
+    /**
+     * 公告图片
+     */
+    @TableField(value = "news_photo")
+
+    private String newsPhoto;
+
+
+    /**
+     * 公告时间
+     */
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat
-	private Date addtime;
+    @TableField(value = "insert_time",fill = FieldFill.INSERT)
 
-	public Date getAddtime() {
-		return addtime;
-	}
-	public void setAddtime(Date addtime) {
-		this.addtime = addtime;
-	}
+    private Date insertTime;
 
-	public Long getId() {
-		return id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-	/**
-	 * 设置：标题
-	 */
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	/**
-	 * 获取：标题
-	 */
-	public String getTitle() {
-		return title;
-	}
-	/**
-	 * 设置：简介
-	 */
-	public void setIntroduction(String introduction) {
-		this.introduction = introduction;
-	}
-	/**
-	 * 获取：简介
-	 */
-	public String getIntroduction() {
-		return introduction;
-	}
-	/**
-	 * 设置：图片
-	 */
-	public void setPicture(String picture) {
-		this.picture = picture;
-	}
-	/**
-	 * 获取：图片
-	 */
-	public String getPicture() {
-		return picture;
-	}
-	/**
-	 * 设置：内容
-	 */
-	public void setContent(String content) {
-		this.content = content;
-	}
-	/**
-	 * 获取：内容
-	 */
-	public String getContent() {
-		return content;
-	}
+    /**
+     * 公告详情
+     */
+    @TableField(value = "news_content")
 
+    private String newsContent;
+
+
+    /**
+     * 创建时间
+     */
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	@DateTimeFormat
+    @TableField(value = "create_time",fill = FieldFill.INSERT)
+
+    private Date createTime;
+
+
+    /**
+	 * 设置：主键
+	 */
+    public Integer getId() {
+        return id;
+    }
+
+
+    /**
+	 * 获取：主键
+	 */
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    /**
+	 * 设置：公告标题
+	 */
+    public String getNewsName() {
+        return newsName;
+    }
+
+
+    /**
+	 * 获取：公告标题
+	 */
+
+    public void setNewsName(String newsName) {
+        this.newsName = newsName;
+    }
+    /**
+	 * 设置：公告类型
+	 */
+    public Integer getNewsTypes() {
+        return newsTypes;
+    }
+
+
+    /**
+	 * 获取：公告类型
+	 */
+
+    public void setNewsTypes(Integer newsTypes) {
+        this.newsTypes = newsTypes;
+    }
+    /**
+	 * 设置：公告图片
+	 */
+    public String getNewsPhoto() {
+        return newsPhoto;
+    }
+
+
+    /**
+	 * 获取：公告图片
+	 */
+
+    public void setNewsPhoto(String newsPhoto) {
+        this.newsPhoto = newsPhoto;
+    }
+    /**
+	 * 设置：公告时间
+	 */
+    public Date getInsertTime() {
+        return insertTime;
+    }
+
+
+    /**
+	 * 获取：公告时间
+	 */
+
+    public void setInsertTime(Date insertTime) {
+        this.insertTime = insertTime;
+    }
+    /**
+	 * 设置：公告详情
+	 */
+    public String getNewsContent() {
+        return newsContent;
+    }
+
+
+    /**
+	 * 获取：公告详情
+	 */
+
+    public void setNewsContent(String newsContent) {
+        this.newsContent = newsContent;
+    }
+    /**
+	 * 设置：创建时间
+	 */
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+
+    /**
+	 * 获取：创建时间
+	 */
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    @Override
+    public String toString() {
+        return "News{" +
+            "id=" + id +
+            ", newsName=" + newsName +
+            ", newsTypes=" + newsTypes +
+            ", newsPhoto=" + newsPhoto +
+            ", insertTime=" + insertTime +
+            ", newsContent=" + newsContent +
+            ", createTime=" + createTime +
+        "}";
+    }
 }

@@ -52,6 +52,7 @@
 <script>
 // 数字，邮件，手机，url，身份证校验
 import { isNumber,isIntNumer,isEmail,isPhone, isMobile,isURL,checkIdCard } from "@/utils/validate";
+import styleJs from "../../../utils/style.js";
 export default {
   data() {
     let self = this
@@ -119,7 +120,7 @@ export default {
       }
     };
     return {
-	  addEditForm: {"btnSaveFontColor":"#fff","selectFontSize":"14px","btnCancelBorderColor":"#DCDFE6","inputBorderRadius":"6px","inputFontSize":"14px","textareaBgColor":"#fff","btnSaveFontSize":"14px","textareaBorderRadius":"6px","uploadBgColor":"rgba(217, 204, 204, 0.36)","textareaBorderStyle":"solid","btnCancelWidth":"88px","textareaHeight":"120px","dateBgColor":"#fff","btnSaveBorderRadius":"6px","uploadLableFontSize":"14px","textareaBorderWidth":"2px","inputLableColor":"#606266","addEditBoxColor":"rgba(255, 179, 167, 0.23)","dateIconFontSize":"14px","btnSaveBgColor":"#409EFF","uploadIconFontColor":"#8c939d","textareaBorderColor":"#DCDFE6","btnCancelBgColor":"rgba(144, 238, 144, 1)","selectLableColor":"#606266","btnSaveBorderStyle":"solid","dateBorderWidth":"2px","dateLableFontSize":"14px","dateBorderRadius":"4px","btnCancelBorderStyle":"solid","selectLableFontSize":"14px","selectBorderStyle":"solid","selectIconFontColor":"#C0C4CC","btnCancelHeight":"44px","inputHeight":"40px","btnCancelFontColor":"#606266","dateBorderColor":"#DCDFE6","dateIconFontColor":"#C0C4CC","uploadBorderStyle":"solid","dateBorderStyle":"solid","dateLableColor":"#606266","dateFontSize":"14px","inputBorderWidth":"2px","uploadIconFontSize":"28px","selectHeight":"40px","inputFontColor":"rgba(11, 11, 11, 1)","uploadHeight":"148px","textareaLableColor":"#606266","textareaLableFontSize":"14px","btnCancelFontSize":"14px","inputBorderStyle":"solid","btnCancelBorderRadius":"6px","inputBgColor":"#fff","inputLableFontSize":"14px","uploadLableColor":"#606266","uploadBorderRadius":"6px","btnSaveHeight":"44px","selectBgColor":"#fff","btnSaveWidth":"88px","selectIconFontSize":"14px","dateHeight":"40px","selectBorderColor":"#DCDFE6","inputBorderColor":"#DCDFE6","uploadBorderColor":"#DCDFE6","textareaFontColor":"rgba(15, 15, 16, 1)","selectBorderWidth":"2px","dateFontColor":"rgba(14, 14, 14, 1)","btnCancelBorderWidth":"2px","uploadBorderWidth":"2px","textareaFontSize":"14px","selectBorderRadius":"4px","selectFontColor":"rgba(10, 10, 10, 1)","btnSaveBorderColor":"#409EFF","btnSaveBorderWidth":"2px"},
+	  addEditForm: null,
       id: '',
       type: '',
       ro:{
@@ -143,6 +144,7 @@ export default {
   computed: {
   },
   created() {
+    this.addEditForm = styleJs.addStyle();
 	this.addEditStyleChange()
 	this.addEditUploadStyleChange()
   },
@@ -192,9 +194,6 @@ export default {
     },
     // 提交
     onSubmit() {
-      // ${column.compare}
-      // ${column.compare}
-
 
       this.$refs["ruleForm"].validate(valid => {
         if (valid) {
@@ -380,7 +379,7 @@ export default {
 <style lang="scss">
 .editor{
   height: 500px;
-  
+
   & /deep/ .ql-container {
 	  height: 310px;
   }
@@ -400,5 +399,4 @@ export default {
 }
 .btn .el-button {
   padding: 0;
-}
-</style>
+}</style>

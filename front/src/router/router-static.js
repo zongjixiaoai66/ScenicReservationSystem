@@ -11,18 +11,34 @@ import UpdatePassword from '@/views/update-password'
 import pay from '@/views/pay'
 import register from '@/views/register'
 import center from '@/views/center'
-    import yaopinleibie from '@/views/modules/yaopinleibie/list'
-    import forum from '@/views/modules/forum/list'
+
+     import users from '@/views/modules/users/list'
+    import dictionary from '@/views/modules/dictionary/list'
+    import fangjian from '@/views/modules/fangjian/list'
+    import fangjianLiuyan from '@/views/modules/fangjianLiuyan/list'
+    import fnagjianYuye from '@/views/modules/fnagjianYuye/list'
+    import gongzuojilu from '@/views/modules/gongzuojilu/list'
+    import gongzuorenyuan from '@/views/modules/gongzuorenyuan/list'
+    import jingdian from '@/views/modules/jingdian/list'
+    import jingdianLiuyan from '@/views/modules/jingdianLiuyan/list'
+    import jingdianYuye from '@/views/modules/jingdianYuye/list'
+    import meishi from '@/views/modules/meishi/list'
+    import meishiLiuyan from '@/views/modules/meishiLiuyan/list'
+    import meishiYuye from '@/views/modules/meishiYuye/list'
     import news from '@/views/modules/news/list'
-    import bingrenxinxi from '@/views/modules/bingrenxinxi/list'
-    import hushi from '@/views/modules/hushi/list'
-    import yaofangxinxi from '@/views/modules/yaofangxinxi/list'
-    import bingchuangleibie from '@/views/modules/bingchuangleibie/list'
-    import bingchuang from '@/views/modules/bingchuang/list'
-    import yisheng from '@/views/modules/yisheng/list'
+    import yonghu from '@/views/modules/yonghu/list'
     import config from '@/views/modules/config/list'
-    import keshixinxi from '@/views/modules/keshixinxi/list'
-    import yaofang from '@/views/modules/yaofang/list'
+    import dictionaryFangjian from '@/views/modules/dictionaryFangjian/list'
+    import dictionaryFnagjianYuyeYesno from '@/views/modules/dictionaryFnagjianYuyeYesno/list'
+    import dictionaryJingdian from '@/views/modules/dictionaryJingdian/list'
+    import dictionaryJingdianYuyeYesno from '@/views/modules/dictionaryJingdianYuyeYesno/list'
+    import dictionaryMeishi from '@/views/modules/dictionaryMeishi/list'
+    import dictionaryMeishiYuyeYesno from '@/views/modules/dictionaryMeishiYuyeYesno/list'
+    import dictionaryNews from '@/views/modules/dictionaryNews/list'
+    import dictionarySex from '@/views/modules/dictionarySex/list'
+
+
+
 
 
 //2.配置路由   注意：名字
@@ -51,67 +67,130 @@ const routes = [{
       name: '个人信息',
       component: center,
       meta: {icon:'', title:'center'}
+    } ,{
+        path: '/users',
+        name: '管理信息',
+        component: users
+      }
+    ,{
+        path: '/dictionaryFangjian',
+        name: '房间类型',
+        component: dictionaryFangjian
     }
-      ,{
-	path: '/yaopinleibie',
-        name: '药品类别',
-        component: yaopinleibie
+    ,{
+        path: '/dictionaryFnagjianYuyeYesno',
+        name: '审核结果',
+        component: dictionaryFnagjianYuyeYesno
+    }
+    ,{
+        path: '/dictionaryJingdian',
+        name: '景点类型',
+        component: dictionaryJingdian
+    }
+    ,{
+        path: '/dictionaryJingdianYuyeYesno',
+        name: '审核结果',
+        component: dictionaryJingdianYuyeYesno
+    }
+    ,{
+        path: '/dictionaryMeishi',
+        name: '美食类型',
+        component: dictionaryMeishi
+    }
+    ,{
+        path: '/dictionaryMeishiYuyeYesno',
+        name: '审核结果',
+        component: dictionaryMeishiYuyeYesno
+    }
+    ,{
+        path: '/dictionaryNews',
+        name: '公告类型',
+        component: dictionaryNews
+    }
+    ,{
+        path: '/dictionarySex',
+        name: '性别',
+        component: dictionarySex
+    }
+    ,{
+        path: '/config',
+        name: '轮播图',
+        component: config
+    }
+
+
+    ,{
+        path: '/dictionary',
+        name: '字典表',
+        component: dictionary
       }
-      ,{
-	path: '/forum',
-        name: '内部论坛',
-        component: forum
+    ,{
+        path: '/fangjian',
+        name: '房间信息',
+        component: fangjian
       }
-      ,{
-	path: '/news',
-        name: '医院公告',
+    ,{
+        path: '/fangjianLiuyan',
+        name: '房间反馈',
+        component: fangjianLiuyan
+      }
+    ,{
+        path: '/fnagjianYuye',
+        name: '房间预约',
+        component: fnagjianYuye
+      }
+    ,{
+        path: '/gongzuojilu',
+        name: '工作记录',
+        component: gongzuojilu
+      }
+    ,{
+        path: '/gongzuorenyuan',
+        name: '工作人员',
+        component: gongzuorenyuan
+      }
+    ,{
+        path: '/jingdian',
+        name: '景点信息',
+        component: jingdian
+      }
+    ,{
+        path: '/jingdianLiuyan',
+        name: '景点反馈',
+        component: jingdianLiuyan
+      }
+    ,{
+        path: '/jingdianYuye',
+        name: '景点预约',
+        component: jingdianYuye
+      }
+    ,{
+        path: '/meishi',
+        name: '美食信息',
+        component: meishi
+      }
+    ,{
+        path: '/meishiLiuyan',
+        name: '美食反馈',
+        component: meishiLiuyan
+      }
+    ,{
+        path: '/meishiYuye',
+        name: '美食预约',
+        component: meishiYuye
+      }
+    ,{
+        path: '/news',
+        name: '公告',
         component: news
       }
-      ,{
-	path: '/bingrenxinxi',
-        name: '病人信息',
-        component: bingrenxinxi
+    ,{
+        path: '/yonghu',
+        name: '用户',
+        component: yonghu
       }
-      ,{
-	path: '/hushi',
-        name: '护士',
-        component: hushi
-      }
-      ,{
-	path: '/yaofangxinxi',
-        name: '药方信息',
-        component: yaofangxinxi
-      }
-      ,{
-	path: '/bingchuangleibie',
-        name: '病床类别',
-        component: bingchuangleibie
-      }
-      ,{
-	path: '/bingchuang',
-        name: '病床',
-        component: bingchuang
-      }
-      ,{
-	path: '/yisheng',
-        name: '医生',
-        component: yisheng
-      }
-      ,{
-	path: '/config',
-        name: '轮播图管理',
-        component: config
-      }
-      ,{
-	path: '/keshixinxi',
-        name: '科室信息',
-        component: keshixinxi
-      }
-      ,{
-	path: '/yaofang',
-        name: '药房',
-        component: yaofang
-      }
+
+
     ]
   },
   {

@@ -1,5 +1,4 @@
-
-var projectName = '医院管理系统';
+var projectName = '景区民宿预约系统';
 /**
  * 轮播图配置
  */
@@ -28,41 +27,44 @@ var swiper = {
 /**
  * 个人中心菜单
  */
-var centerMenu = [{
-	name: '个人中心',
-	url: '../' + localStorage.getItem('userTable') + '/center.html'
-}, 
-{
-	name: '我的发布',
-	url: '../forum/list-my.html'
-},
+var centerMenu = [
+    {
+        name: '个人中心',
+        url: '../' + localStorage.getItem('userTable') + '/center.html'
+    }
 
 ]
 
 
 var indexNav = [
 
+    {
+        name: '房间信息',
+        url: './pages/fangjian/list.html'
+    },
+    {
+        name: '景点信息',
+        url: './pages/jingdian/list.html'
+    },
+    {
+        name: '美食信息',
+        url: './pages/meishi/list.html'
+    },
+    {
+        name: '公告',
+        url: './pages/news/list.html'
+    },
 
-{
-	name: '内部论坛',
-	url: './pages/forum/list.html'
-}, 
-{
-	name: '医院公告',
-	url: './pages/news/list.html'
-},
 ]
 
-var adminurl =  "http://localhost:8080/springboot3v5bn/admin/dist/index.html";
-
-var cartFlag = false
-
-var chatFlag = false
+var adminurl =  "http://localhost:8080/jingquminsuyuyue/admin/dist/index.html#/login";
 
 
 
-
-var menu = [{"backMenu":[{"child":[{"buttons":["新增","查看","修改","删除"],"menu":"医生","menuJump":"列表","tableName":"yisheng"}],"menu":"医生管理"},{"child":[{"buttons":["新增","查看","修改","删除"],"menu":"护士","menuJump":"列表","tableName":"hushi"}],"menu":"护士管理"},{"child":[{"buttons":["新增","查看","修改","删除"],"menu":"病床类别","menuJump":"列表","tableName":"bingchuangleibie"}],"menu":"病床类别管理"},{"child":[{"buttons":["新增","查看","修改","删除"],"menu":"药品类别","menuJump":"列表","tableName":"yaopinleibie"}],"menu":"药品类别管理"},{"child":[{"buttons":["新增","查看","修改","删除"],"menu":"科室信息","menuJump":"列表","tableName":"keshixinxi"}],"menu":"科室信息管理"},{"child":[{"buttons":["新增","查看","修改","删除"],"menu":"内部论坛","tableName":"forum"}],"menu":"内部论坛"},{"child":[{"buttons":["查看","修改"],"menu":"轮播图管理","tableName":"config"},{"buttons":["新增","查看","修改","删除"],"menu":"医院公告","tableName":"news"}],"menu":"系统管理"}],"frontMenu":[],"hasBackLogin":"是","hasBackRegister":"否","hasFrontLogin":"否","hasFrontRegister":"否","roleName":"管理员","tableName":"users"},{"backMenu":[{"child":[{"buttons":["新增","查看","修改","删除"],"menu":"病床","menuJump":"列表","tableName":"bingchuang"}],"menu":"病床管理"},{"child":[{"buttons":["新增","查看","修改","删除"],"menu":"药房","menuJump":"列表","tableName":"yaofang"}],"menu":"药房管理"},{"child":[{"buttons":["新增","查看","修改","删除","开药"],"menu":"病人信息","menuJump":"列表","tableName":"bingrenxinxi"}],"menu":"病人信息管理"},{"child":[{"buttons":["查看","修改","删除"],"menu":"药方信息","menuJump":"列表","tableName":"yaofangxinxi"}],"menu":"药方信息管理"}],"frontMenu":[],"hasBackLogin":"是","hasBackRegister":"否","hasFrontLogin":"是","hasFrontRegister":"是","roleName":"医生","tableName":"yisheng"},{"backMenu":[{"child":[{"buttons":["查看"],"menu":"病床","menuJump":"列表","tableName":"bingchuang"}],"menu":"病床管理"},{"child":[{"buttons":["查看"],"menu":"药房","menuJump":"列表","tableName":"yaofang"}],"menu":"药房管理"},{"child":[{"buttons":["查看"],"menu":"病人信息","menuJump":"列表","tableName":"bingrenxinxi"}],"menu":"病人信息管理"},{"child":[{"buttons":["查看"],"menu":"药方信息","menuJump":"列表","tableName":"yaofangxinxi"}],"menu":"药方信息管理"}],"frontMenu":[],"hasBackLogin":"是","hasBackRegister":"否","hasFrontLogin":"是","hasFrontRegister":"是","roleName":"护士","tableName":"hushi"}]
+// 后期要改
+var menu = [
+{"backMenu":[{"child":[{"buttons":["新增","查看","修改","删除"],"menu":"用户","menuJump":"列表","tableName":"yonghu"}],"menu":"用户管理"},{"child":[{"buttons":["新增","查看","修改","删除","查看评论"],"menu":"歌曲信息","menuJump":"列表","tableName":"gequxinxi"}],"menu":"歌曲信息管理"},{"child":[{"buttons":["查看","删除","查看评论"],"menu":"推荐信息","menuJump":"列表","tableName":"tuijianxinxi"}],"menu":"推荐信息管理"},{"child":[{"buttons":["新增","查看","修改","删除"],"menu":"我的收藏管理","tableName":"storeup"}],"menu":"我的收藏管理"},{"child":[{"buttons":["新增","查看","修改","删除"],"menu":"管理员","tableName":"users"}],"menu":"管理员管理"},{"child":[{"buttons":["新增","查看","修改","删除"],"menu":"轮播图管理","tableName":"config"}],"menu":"系统管理"}],"frontMenu":[{"child":[{"buttons":["查看","歌曲推荐","查看评论"],"menu":"歌曲信息列表","menuJump":"列表","tableName":"gequxinxi"}],"menu":"歌曲信息模块"},{"child":[{"buttons":["查看","查看评论"],"menu":"推荐信息列表","menuJump":"列表","tableName":"tuijianxinxi"}],"menu":"推荐信息模块"}],"hasBackLogin":"是","hasBackRegister":"否","hasFrontLogin":"否","hasFrontRegister":"否","roleName":"管理员","tableName":"users"},{"backMenu":[{"child":[{"buttons":["查看","歌曲推荐"],"menu":"歌曲信息","menuJump":"列表","tableName":"gequxinxi"}],"menu":"歌曲信息管理"},{"child":[{"buttons":["查看"],"menu":"推荐信息","menuJump":"列表","tableName":"tuijianxinxi"}],"menu":"推荐信息管理"},{"child":[{"buttons":["查看"],"menu":"我的收藏管理","tableName":"storeup"}],"menu":"我的收藏管理"}],"frontMenu":[{"child":[{"buttons":["查看","歌曲推荐","查看评论"],"menu":"歌曲信息列表","menuJump":"列表","tableName":"gequxinxi"}],"menu":"歌曲信息模块"},{"child":[{"buttons":["查看","查看评论"],"menu":"推荐信息列表","menuJump":"列表","tableName":"tuijianxinxi"}],"menu":"推荐信息模块"}],"hasBackLogin":"是","hasBackRegister":"否","hasFrontLogin":"是","hasFrontRegister":"是","roleName":"用户","tableName":"yonghu"}
+]
 
 
 var isAuth = function (tableName,key) {

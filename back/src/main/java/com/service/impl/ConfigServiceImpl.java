@@ -11,7 +11,6 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.dao.ConfigDao;
 import com.entity.ConfigEntity;
-import com.entity.UserEntity;
 import com.service.ConfigService;
 import com.utils.PageUtils;
 import com.utils.Query;
@@ -19,6 +18,8 @@ import com.utils.Query;
 
 /**
  * 系统用户
+ * @author yangliyuan
+ * @date 2019年10月10日 上午9:17:59
  */
 @Service("configService")
 public class ConfigServiceImpl extends ServiceImpl<ConfigDao, ConfigEntity> implements ConfigService {

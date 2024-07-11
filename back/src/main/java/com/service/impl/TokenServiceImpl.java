@@ -24,6 +24,7 @@ import com.utils.Query;
 
 /**
  * token
+ * @author
  */
 @Service("tokenService")
 public class TokenServiceImpl extends ServiceImpl<TokenDao, TokenEntity> implements TokenService {
@@ -52,7 +53,7 @@ public class TokenServiceImpl extends ServiceImpl<TokenDao, TokenEntity> impleme
 	}
 
 	@Override
-	public String generateToken(Long userid,String username, String tableName, String role) {
+	public String generateToken(Integer userid,String username, String tableName, String role) {
 		TokenEntity tokenEntity = this.selectOne(new EntityWrapper<TokenEntity>().eq("userid", userid).eq("role", role));
 		String token = CommonUtil.getRandomString(32);
 		Calendar cal = Calendar.getInstance();   

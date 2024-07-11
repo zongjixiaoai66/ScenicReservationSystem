@@ -3,9 +3,9 @@ layui.define(['jquery', 'layer'], function(exports) { //提示：模块也可以
 	"use strict";
 	var jquery = layui.jquery,
 		layer = layui.layer,
-		        baseurl = "http://localhost:8080/springboot3v5bn/";
+		        baseurl = "http://localhost:8080/jingquminsuyuyue/";
         	var http = {
-		        domain : "http://localhost:8080/springboot3v5bn/",
+		        domain : "http://8.129.11.174:8080/jingquminsuyuyue/",
         		baseurl: baseurl,
 		/**
 		 * 获取传递参数值(修改支持中文)
@@ -36,7 +36,7 @@ layui.define(['jquery', 'layer'], function(exports) { //提示：模块也可以
 				success: function(result, status, xhr) {
 					if (result.code == 0) {
 						callback(result);
-					} else if (result.code == 401 || result.code == 403) {
+					} else if (result.code == 401) {
 						window.parent.location.href = '../login/login.html';
 					} else {
 						layer.msg(result.msg, {
@@ -48,15 +48,11 @@ layui.define(['jquery', 'layer'], function(exports) { //提示：模块也可以
 				},
 				error: function(xhr, status, error) {
 					console.log(xhr, status, error)
-					if(xhr.responseJSON.code==401 || xhr.responseJSON.code==403) {
-                                                 window.parent.location.href = '../login/login.html';
-					} else {
-						layer.msg("请求接口失败", {
-							time: 2000,
-							icon: 5
-						})
-						layer.close(index);
-					}
+					layer.msg("请求接口失败", {
+						time: 2000,
+						icon: 5
+					})
+					layer.close(index);
 				}
 			});
 		},
@@ -83,7 +79,7 @@ layui.define(['jquery', 'layer'], function(exports) { //提示：模块也可以
 				success: function(result, status, xhr) {
 					if (result.code == 0) {
 						callback(result);
-					} else if (result.code == 401 || result.code == 403) {
+					} else if (result.code == 401) {
 						window.parent.location.href = '../login/login.html';
 					} else {
 						layer.msg(result.msg, {
@@ -95,15 +91,11 @@ layui.define(['jquery', 'layer'], function(exports) { //提示：模块也可以
 				},
 				error: function(xhr, status, error) {
 					console.log(xhr, status, error)
-					if(xhr.responseJSON.code==401 || xhr.responseJSON.code==403) {
-                                                 window.parent.location.href = '../login/login.html';
-					} else {
-						layer.msg("请求接口失败", {
-							time: 2000,
-							icon: 5
-						})
-						layer.close(index);
-					}
+					layer.msg("请求接口失败", {
+						time: 2000,
+						icon: 5
+					})
+					layer.close(index);
 				},
 			});
 		},
@@ -125,7 +117,7 @@ layui.define(['jquery', 'layer'], function(exports) { //提示：模块也可以
 				success: function(res) {
 					if (res.code == 0) {
 						callback(res);
-					} else if (res.code == 401 || result.code == 403) {
+					} else if (res.code == 401) {
 						window.parent.location.href = '../login/login.html';
 					} else {
 						layer.msg(res.msg, {
